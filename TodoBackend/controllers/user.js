@@ -7,7 +7,9 @@ import ErrorHandler from "../middlewares/error.js";
 export const userLogin = async (req,res,next)=>{
     try {
         const {email,password}=req.body;
-    let user = await User.findOne({email}).select("+password") // we have used select("+password") because we want to select password as it's property select was initially false
+    let user = await User.findOne({email}).select("+password") // By using .select("+password"), we specify that the retrieved document should include the password field.
+                                                            // By default, Mongoose excludes certain fields, including password, for security reasons.
+                                                            //However, by explicitly selecting the password field with the + prefix, we override this behavior and include the password field in the retrieved document.
     if(!user){
         return next(new ErrorHandler("Invalid email or password", 400))
     }
